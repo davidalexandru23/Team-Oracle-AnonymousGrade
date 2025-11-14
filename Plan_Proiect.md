@@ -8,15 +8,15 @@
 
     Profesorul vede evaluarile studentilor pentru fiecare proiect, fara sa aiba acces la identitatea juratilor.
 
-2. Tehnologii utilizate
-    -Frontend: React.js (single page application)
-    -Backend: Node.js + Express.js (REST API)
-    -ORM: Prisma
-    -Baza de Date: PostgreSQL
-    -Versionare: Git
-    -Deploy: 
-            -Frontend si Backend: Render
-            - Baza de Date: Neon
+2. Tehnologii utilizate:
+    - Frontend: React.js (single page application)
+    - Backend: Node.js + Express.js (REST API)
+    - ORM: Prisma
+    - Baza de Date: PostgreSQL
+    - Versionare: Git
+    - Deploy: 
+        - Frontend si Backend: Render
+        - Baza de Date: Neon
 
 
 3. Roluri de utilizatori
