@@ -136,42 +136,35 @@
 
 
 
--
+
 # Plan de Proiect 
-    - Configurare:
-        - Schelet foldere pentru backend
-        - Structura pagina  web frontend
-        - Creeare model Prisma
-        - Configurare bazei de date in Neon
-
-    - Implementare Backend:
-        - implementare autentificare cu JWT
-        - realizarea rutelor 
-        - implementarea mecanismului de asignare aleatorie
-        - sistemul de notare
-        - calcul automat al notei
-        - testare API calls in Postman
-        - deploy in Render
-
-    - Implementarea frontend:
-        - creeare pagina login
-        - dashboard pentru MP : proiecte,livrabil, adaugare demo
-        - pagina pentru livrabil, cu afisare link video/demo
-        - dashboard pentru profesor: vizualiarea notelor indiviudale si nota finala per proiect
-        - integrare cu backend prin API calls
-        - Deploy pe Render 
-
-    - Testare:
-        - Testatre prin scenarii pentru a verifica comportamentul aplicatiei
-        - Corectarea bug-urilor identificate
-        - Deploy final
-        - Pregatirea prezentarii pentru demo
-    
-
-    
-
-        
 
 
-        
+- Configurare:
+  - Schelet foldere pentru backend
+  - Structura paginii frontend
+  - Creare model Prisma
+  - Configurare baza de date in Neon
 
+- Implementare Backend:
+  - Implementare autentificare cu JWT
+  - Realizarea rutelor principale
+  - Mecanism de asignare aleatorie a juriului
+  - Sistemul de notare
+  - Calcul automat al notei finale
+  - Testare API in Postman
+  - Deploy backend pe Render
+
+- Implementare Frontend:
+  - Creare pagina de login
+  - Dashboard pentru MP: proiecte, livrabile, demo
+  - Pagina pentru livrabil (video/demo)
+  - Dashboard profesor: note anonime + nota finala
+  - Integrare API cu backend
+  - Deploy frontend pe Render
+
+- Testare si Demo:
+  - Testare cu scenarii (test cases)
+  - Corectarea bug-urilor
+  - Deploy final
+  - Pregatirea demonstratiei aplicatiei
