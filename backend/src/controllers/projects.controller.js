@@ -68,24 +68,13 @@ async function getProjectById(req, res, next) {
     let isTeamMember = false;
     if (project.teamId) {
       const membership = await prisma.teamMember.findUnique({
-        where: {
-          teamId_userId: {
-            teamId: project.teamId,
-            userId: req.user.id
-          }
-        }
+        where: { teamId_userId: { teamId: project.teamId, userId: req.user.id } }
       });
-      isTeamMember = !!membership;
-
-      if (!isTeamMember) {
-        const team = await prisma.team.findUnique({
-          where: { id: project.teamId },
-          select: { ownerId: true }
-        });
-        if (team && team.ownerId === req.user.id) {
-          isTeamMember = true;
-        }
-      }
+      const team = await prisma.team.findUnique({
+        where: { id: project.teamId },
+        select: { ownerId: true }
+      });
+      isTeamMember = !!membership || team?.ownerId === req.user.id;
     }
 
     if (!isTeacher && !isOwner && !isTeamMember) {

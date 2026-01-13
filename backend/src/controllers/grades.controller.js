@@ -25,7 +25,12 @@ async function submitGrade(req, res, next) {
       throw new HttpError(403, "Nu esti asignat ca jurat pentru acest livrabil.");
     }
 
+    console.log(`[DEBUG] Checking expiration for assignment ${assignment.id}`);
+    console.log(`[DEBUG] Current Time: ${new Date().toISOString()}`);
+    console.log(`[DEBUG] Expires At:   ${assignment.expiresAt.toISOString()}`);
+
     if (new Date() > assignment.expiresAt) {
+      console.log(`[DEBUG] EXPIRED!`);
       throw new HttpError(403, "Termenul de evaluare a expirat.");
     }
 
