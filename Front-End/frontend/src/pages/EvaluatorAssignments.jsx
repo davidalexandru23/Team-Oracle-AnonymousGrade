@@ -23,70 +23,166 @@ function EvaluatorAssignments() {
   }, []);
 
   const formatDate = (dateStr) => {
-    return new Date(dateStr).toLocaleString('ro-RO');
+    return new Date(dateStr).toLocaleString('ro-RO', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
   const isExpired = (expiresAt) => {
     return new Date(expiresAt) < new Date();
   };
 
+  const getTimeRemaining = (expiresAt) => {
+    const now = new Date();
+    const expires = new Date(expiresAt);
+    const diff = expires - now;
+    
+    if (diff <= 0) return null;
+    
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    
+    if (hours > 24) {
+      const days = Math.floor(hours / 24);
+      return `${days} zile ramase`;
+    }
+    return `${hours}h ${minutes}m ramase`;
+  };
+
+  // Separate active and expired assignments
+  const activeAssignments = assignments.filter(a => !isExpired(a.expiresAt));
+  const expiredAssignments = assignments.filter(a => isExpired(a.expiresAt));
+
   if (loading) {
     return <div className="loading">Se incarca evaluarile...</div>;
   }
 
   return (
-    <div className="dashboard">
-      <h1>Evaluarile Mele</h1>
+    <div className="evaluator-dashboard">
+      <div className="dashboard-header">
+        <h1>📝 Evaluarile Mele</h1>
+        <p className="dashboard-subtitle">
+          Proiectele pe care trebuie sa le evaluezi ca membru al juriului
+        </p>
+      </div>
 
       {error && <div className="error-message">{error}</div>}
 
-      <div className="assignments-list">
-        {assignments.length === 0 ? (
-          <p className="no-data">Nu ai evaluari inca. Vei fi alocat sa evaluezi proiecte de catre profesori.</p>
-        ) : (
-          assignments.map((assignment) => (
-            <div key={assignment.assignmentId} className="card assignment-card">
-              <div className="assignment-header">
-                <h3>{assignment.deliverable.project.title}</h3>
-                <span className={`status-badge ${isExpired(assignment.expiresAt) ? 'expired' : 'active'}`}>
-                  {isExpired(assignment.expiresAt) ? 'Expirat' : 'Activ'}
-                </span>
-              </div>
-              <div className="assignment-details">
-                <p><strong>Livrabil:</strong> {assignment.deliverable.title}</p>
-                <p><strong>Termen limita:</strong> {formatDate(assignment.deliverable.deadline)}</p>
-                <p><strong>Notarea expira la:</strong> {formatDate(assignment.expiresAt)}</p>
-                {assignment.deliverable.demoUrl && (
-                  <p>
-                    <strong>Demo:</strong>{' '}
-                    <a href={assignment.deliverable.demoUrl} target="_blank" rel="noopener noreferrer">
-                      {assignment.deliverable.demoUrl}
-                    </a>
-                  </p>
-                )}
-              </div>
+      {assignments.length === 0 ? (
+        <div className="empty-state">
+          <div className="empty-icon">🎓</div>
+          <h3>Nu ai evaluari inca</h3>
+          <p>Vei fi alocat aleatoriu sa evaluezi proiecte de catre profesori.</p>
+        </div>
+      ) : (
+        <>
+          {/* Active Assignments */}
+          {activeAssignments.length > 0 && (
+            <div className="assignments-section">
+              <h2 className="section-title">
+                <span className="section-icon">🔥</span>
+                Evaluari Active ({activeAssignments.length})
+              </h2>
+              <div className="assignments-grid">
+                {activeAssignments.map((assignment) => (
+                  <div key={assignment.assignmentId} className="assignment-card active">
+                    <div className="assignment-card-header">
+                      <div className="project-info">
+                        <h3>{assignment.deliverable.project.title}</h3>
+                        <span className="deliverable-name">{assignment.deliverable.title}</span>
+                      </div>
+                      <div className="time-badge active">
+                        {getTimeRemaining(assignment.expiresAt)}
+                      </div>
+                    </div>
 
-              <div className="assignment-grade">
-                {assignment.myGrade ? (
-                  <div className="current-grade">
-                    <p>Nota ta actuala: <strong>{assignment.myGrade.score}</strong></p>
-                    <p className="grade-date">Ultima actualizare: {formatDate(assignment.myGrade.updatedAt)}</p>
+                    <div className="assignment-card-body">
+                      {assignment.deliverable.demoUrl && (
+                        <a 
+                          href={assignment.deliverable.demoUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="demo-link"
+                        >
+                          🔗 Vezi Demo
+                        </a>
+                      )}
+                      
+                      <div className="deadline-info">
+                        <span className="label">Termen livrabil:</span>
+                        <span className="value">{formatDate(assignment.deliverable.deadline)}</span>
+                      </div>
+                      
+                      <div className="deadline-info">
+                        <span className="label">Evaluare pana la:</span>
+                        <span className="value highlight">{formatDate(assignment.expiresAt)}</span>
+                      </div>
+                    </div>
+
+                    <div className="assignment-card-footer">
+                      {assignment.myGrade && (
+                        <div className="current-grade-display">
+                          <span className="grade-label">Nota ta curenta:</span>
+                          <span className="grade-value">{assignment.myGrade.score}</span>
+                        </div>
+                      )}
+                      <GradeForm
+                        deliverableId={assignment.deliverableId}
+                        currentGrade={assignment.myGrade}
+                        onSubmit={fetchAssignments}
+                        expiresAt={assignment.expiresAt}
+                      />
+                    </div>
                   </div>
-                ) : (
-                  <p className="no-grade">Nu ai trimis inca o nota.</p>
-                )}
-
-                <GradeForm
-                  deliverableId={assignment.deliverableId}
-                  currentGrade={assignment.myGrade}
-                  onSubmit={fetchAssignments}
-                  disabled={isExpired(assignment.expiresAt)}
-                />
+                ))}
               </div>
             </div>
-          ))
-        )}
-      </div>
+          )}
+
+          {/* Expired Assignments */}
+          {expiredAssignments.length > 0 && (
+            <div className="assignments-section expired-section">
+              <h2 className="section-title">
+                <span className="section-icon">📋</span>
+                Evaluari Finalizate ({expiredAssignments.length})
+              </h2>
+              <div className="assignments-grid">
+                {expiredAssignments.map((assignment) => (
+                  <div key={assignment.assignmentId} className="assignment-card expired">
+                    <div className="assignment-card-header">
+                      <div className="project-info">
+                        <h3>{assignment.deliverable.project.title}</h3>
+                        <span className="deliverable-name">{assignment.deliverable.title}</span>
+                      </div>
+                      <div className="time-badge expired">Finalizat</div>
+                    </div>
+
+                    <div className="assignment-card-body">
+                      <div className="deadline-info">
+                        <span className="label">Evaluat la:</span>
+                        <span className="value">{formatDate(assignment.expiresAt)}</span>
+                      </div>
+                    </div>
+
+                    <div className="assignment-card-footer">
+                      <GradeForm
+                        deliverableId={assignment.deliverableId}
+                        currentGrade={assignment.myGrade}
+                        onSubmit={fetchAssignments}
+                        expiresAt={assignment.expiresAt}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
