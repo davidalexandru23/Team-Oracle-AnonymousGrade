@@ -6,6 +6,7 @@ const { router: projectsRoutes } = require("./routes/projects.routes");
 const { router: deliverablesRoutes } = require("./routes/deliverables.routes");
 const { router: juryRoutes } = require("./routes/jury.routes");
 const { router: gradesRoutes } = require("./routes/grades.routes");
+const { router: teamsRoutes } = require("./routes/teams.routes");
 
 const { errorHandler } = require("./middleware/error.middleware");
 const { requestLogger } = require("./middleware/logging.middleware");
@@ -28,6 +29,7 @@ function createApp() {
 
   app.use("/", juryRoutes);
   app.use("/", gradesRoutes);
+  app.use("/", teamsRoutes);
 
   app.use(errorHandler);
 
