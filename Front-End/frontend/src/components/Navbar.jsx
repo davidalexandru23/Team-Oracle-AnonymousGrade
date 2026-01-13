@@ -1,9 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../store/authStore.jsx';
 
 function Navbar() {
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
@@ -19,15 +20,46 @@ function Navbar() {
     return 'Student';
   };
 
+  const isActive = (path) => {
+    return location.pathname.startsWith(path);
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-brand">
         <Link to="/">NotaAnonima</Link>
       </div>
       <div className="navbar-links">
+        {user?.role === 'STUDENT' && (
+          <>
+            <Link 
+              to="/teams" 
+              className={`nav-link ${isActive('/teams') || isActive('/projects') ? 'active' : ''}`}
+            >
+              <span className="nav-icon">📁</span>
+              Echipele Mele
+            </Link>
+            <Link 
+              to="/assignments" 
+              className={`nav-link ${isActive('/assignments') ? 'active' : ''}`}
+            >
+              <span className="nav-icon">📝</span>
+              Evaluari
+            </Link>
+          </>
+        )}
+        {user?.role === 'TEACHER' && (
+          <Link 
+            to="/teacher" 
+            className={`nav-link ${isActive('/teacher') ? 'active' : ''}`}
+          >
+            <span className="nav-icon">📊</span>
+            Toate Proiectele
+          </Link>
+        )}
       </div>
       <div className="navbar-user">
-        <span>{user?.name} ({getRoleLabel(user?.role)})</span>
+        <span className="user-info">{user?.name} ({getRoleLabel(user?.role)})</span>
         <button onClick={handleLogout} className="btn btn-logout">
           Deconectare
         </button>

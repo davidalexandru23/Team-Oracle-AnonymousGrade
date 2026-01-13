@@ -76,18 +76,32 @@ body {
   gap: 0.5rem;
 }
 
-.navbar-links a {
+.nav-link {
   color: var(--text);
   text-decoration: none;
   padding: 0.6rem 1.2rem;
   border-radius: var(--radius);
   transition: all 0.2s ease;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 2px solid transparent;
 }
 
-.navbar-links a:hover {
+.nav-link:hover {
   background: var(--bg-input);
   color: var(--primary);
+}
+
+.nav-link.active {
+  background: linear-gradient(135deg, rgba(139, 41, 66, 0.1) 0%, rgba(139, 41, 66, 0.05) 100%);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.nav-icon {
+  font-size: 1.1rem;
 }
 
 .navbar-user {
@@ -96,7 +110,7 @@ body {
   gap: 1rem;
 }
 
-.navbar-user span {
+.user-info {
   color: var(--text-muted);
   font-size: 0.9rem;
 }
