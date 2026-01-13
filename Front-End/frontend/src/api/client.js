@@ -22,11 +22,13 @@ client.interceptors.request.use(
   }
 );
 
-// interceptor to handle 401 responses
+// interceptor to handle 401 responses (except for auth endpoints)
 client.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
+    // Don't redirect on 401 for login/register endpoints
+    const isAuthEndpoint = error.config?.url?.includes('/auth/');
+    if (error.response && error.response.status === 401 && !isAuthEndpoint) {
       localStorage.removeItem('token');
       window.location.href = '/login';
     }

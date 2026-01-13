@@ -117,7 +117,7 @@ function ProjectDetails() {
       <div className="deliverables-section">
         <div className="section-header">
           <h2>Livrabile</h2>
-          {(isOwner || isTeacher) && (
+          {isOwner && (
             <button onClick={() => setShowForm(!showForm)} className="btn btn-primary">
               {showForm ? 'Anuleaza' : 'Adauga Livrabil'}
             </button>
@@ -183,7 +183,7 @@ function ProjectDetails() {
                 <DeliverableCard
                   deliverable={del}
                   onUpdate={fetchProjectData}
-                  canEdit={isOwner || isTeacher}
+                  canEdit={isOwner}
                   showGrades={true}
                 />
                 {isTeacher && (
