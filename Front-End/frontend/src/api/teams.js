@@ -24,9 +24,9 @@ export const addProjectToTeam = async (teamId, title, description) => {
   return response.data;
 };
 
-// Add a member to a team (by email)
-export const addTeamMember = async (teamId, email) => {
-  const response = await client.post(`/teams/${teamId}/members`, { email });
+// Add a member to a team (by student ID)
+export const addTeamMember = async (teamId, studentId) => {
+  const response = await client.post(`/teams/${teamId}/members`, { studentId });
   return response.data;
 };
 
