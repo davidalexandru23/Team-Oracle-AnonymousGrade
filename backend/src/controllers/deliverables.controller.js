@@ -45,7 +45,22 @@ async function listDeliverables(req, res, next) {
     const project = await prisma.project.findUnique({ where: { id: projectId } });
     if (!project) throw new HttpError(404, "Proiect inexistent.");
 
-    if (req.user.role !== "TEACHER" && project.ownerId !== req.user.id) {
+    const isTeacher = req.user.role === "TEACHER";
+    const isOwner = project.ownerId === req.user.id;
+
+    let isTeamMember = false;
+    if (project.teamId) {
+      const membership = await prisma.teamMember.findUnique({
+        where: { teamId_userId: { teamId: project.teamId, userId: req.user.id } }
+      });
+      if (membership) isTeamMember = true;
+      else {
+        const team = await prisma.team.findUnique({ where: { id: project.teamId }, select: { ownerId: true } });
+        if (team && team.ownerId === req.user.id) isTeamMember = true;
+      }
+    }
+
+    if (!isTeacher && !isOwner && !isTeamMember) {
       throw new HttpError(403, "Acces interzis la livrabilele acestui proiect.");
     }
 

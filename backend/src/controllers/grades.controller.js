@@ -62,7 +62,7 @@ async function getGradesForDeliverable(req, res, next) {
       select: {
         id: true,
         title: true,
-        project: { select: { id: true, ownerId: true, title: true } },
+        project: { select: { id: true, ownerId: true, title: true, teamId: true } },
         assignments: {
           select: {
             grade: { select: { id: true, score: true, createdAt: true, updatedAt: true } }
@@ -76,7 +76,19 @@ async function getGradesForDeliverable(req, res, next) {
     const isTeacher = req.user.role === "TEACHER";
     const isOwner = deliverable.project.ownerId === req.user.id;
 
-    if (!isTeacher && !isOwner) {
+    let isTeamMember = false;
+    if (deliverable.project.teamId) {
+      const membership = await prisma.teamMember.findUnique({
+        where: { teamId_userId: { teamId: deliverable.project.teamId, userId: req.user.id } }
+      });
+      if (membership) isTeamMember = true;
+      else {
+        const team = await prisma.team.findUnique({ where: { id: deliverable.project.teamId }, select: { ownerId: true } });
+        if (team && team.ownerId === req.user.id) isTeamMember = true;
+      }
+    }
+
+    if (!isTeacher && !isOwner && !isTeamMember) {
       throw new HttpError(403, "Acces interzis la notele acestui livrabil.");
     }
 
