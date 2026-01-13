@@ -16,11 +16,11 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
 
     try {
       const data = await registerApi(name, email, password, role);
+      setError(''); // Clear error only on success
       login(data.user, data.token);
 
       if (data.user.role === 'TEACHER') {

@@ -25,15 +25,6 @@ function Navbar() {
         <Link to="/">NotaAnonima</Link>
       </div>
       <div className="navbar-links">
-        {user?.role === 'STUDENT' && (
-          <>
-            <Link to="/mp">Proiectele Mele</Link>
-            <Link to="/assignments">Evaluarile Mele</Link>
-          </>
-        )}
-        {user?.role === 'TEACHER' && (
-          <Link to="/teacher">Panou Profesor</Link>
-        )}
       </div>
       <div className="navbar-user">
         <span>{user?.name} ({getRoleLabel(user?.role)})</span>

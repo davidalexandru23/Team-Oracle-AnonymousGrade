@@ -5,7 +5,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import RoleGuard from './components/RoleGuard';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import MpDashboard from './pages/MpDashboard';
+import TeamsDashboard from './pages/TeamsDashboard';
+import TeamDetails from './pages/TeamDetails';
 import ProjectDetails from './pages/ProjectDetails';
 import EvaluatorAssignments from './pages/EvaluatorAssignments';
 import TeacherDashboard from './pages/TeacherDashboard';
@@ -27,7 +28,7 @@ function HomeRedirect() {
     return <Navigate to="/teacher" replace />;
   }
 
-  return <Navigate to="/mp" replace />;
+  return <Navigate to="/teams" replace />;
 }
 
 function AppContent() {
@@ -43,13 +44,23 @@ function AppContent() {
           {/* home redirect */}
           <Route path="/" element={<HomeRedirect />} />
 
-          {/* student routes */}
+          {/* student routes - teams */}
           <Route
-            path="/mp"
+            path="/teams"
             element={
               <ProtectedRoute>
                 <RoleGuard allowedRoles={['STUDENT']}>
-                  <MpDashboard />
+                  <TeamsDashboard />
+                </RoleGuard>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/teams/:id"
+            element={
+              <ProtectedRoute>
+                <RoleGuard allowedRoles={['STUDENT']}>
+                  <TeamDetails />
                 </RoleGuard>
               </ProtectedRoute>
             }
@@ -106,3 +117,4 @@ function App() {
 }
 
 export default App;
+

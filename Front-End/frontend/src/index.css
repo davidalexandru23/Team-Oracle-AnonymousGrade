@@ -680,3 +680,144 @@ body {
 .card, .auth-container, .create-form-container {
   animation: fadeIn 0.3s ease;
 }
+
+/* teams */
+.teams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.team-card {
+  display: block;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-light);
+}
+
+.team-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.team-card-header h3 {
+  color: var(--text);
+  margin: 0;
+}
+
+.owner-badge {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.team-description {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.team-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.team-owner-info {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* team details */
+.team-details {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.team-header {
+  margin-bottom: 2rem;
+}
+
+.team-header-info .back-link {
+  display: inline-block;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.team-header-info .back-link:hover {
+  transform: translateX(-4px);
+}
+
+.team-header-info h1 {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.team-header-info .team-description {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.team-section {
+  margin-bottom: 2.5rem;
+}
+
+.team-section h2 {
+  font-size: 1.5rem;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.member-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--bg-card);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.member-name {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.member-role {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding: 0.2rem 0.6rem;
+  background: var(--bg-input);
+  border-radius: 6px;
+}
+
