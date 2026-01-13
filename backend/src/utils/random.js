@@ -1,8 +1,12 @@
-class HttpError extends Error {
-  constructor(statusCode, message) {
-    super(message);
-    this.statusCode = statusCode;
+function shuffleInPlace(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
 }
 
-module.exports = { HttpError };
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+module.exports = { shuffleInPlace, getRandomInt };
