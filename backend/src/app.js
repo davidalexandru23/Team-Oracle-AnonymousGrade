@@ -8,12 +8,14 @@ const { router: juryRoutes } = require("./routes/jury.routes");
 const { router: gradesRoutes } = require("./routes/grades.routes");
 
 const { errorHandler } = require("./middleware/error.middleware");
+const { requestLogger } = require("./middleware/logging.middleware");
 
 function createApp() {
   const app = express();
 
   app.use(cors());
   app.use(express.json());
+  app.use(requestLogger);
 
   // healthcheck simplu
   app.get("/health", (req, res) => res.json({ ok: true }));
