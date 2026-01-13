@@ -94,7 +94,33 @@ async function createTeam(ownerId, name, description) {
     return team;
 }
 
-async function addMember(teamId, requestingUserId, email) {
+async function getAvailableStudents(teamId) {
+    const team = await prisma.team.findUnique({
+        where: { id: teamId },
+        include: { members: true }
+    });
+
+    if (!team) {
+        throw new HttpError(404, "Echipa nu exista.");
+    }
+
+    const memberIds = team.members.map(m => m.userId);
+
+    const students = await prisma.user.findMany({
+        where: {
+            role: "STUDENT",
+            AND: [
+                { id: { not: team.ownerId } },
+                { id: { notIn: memberIds } }
+            ]
+        },
+        select: { id: true, name: true, email: true }
+    });
+
+    return students;
+}
+
+async function addMember(teamId, requestingUserId, studentId) {
     // Check auth and team existence
     const team = await prisma.team.findUnique({ where: { id: teamId } });
     if (!team) throw new HttpError(404, "Echipa nu exista.");
@@ -103,9 +129,9 @@ async function addMember(teamId, requestingUserId, email) {
     }
 
     // Find user to add
-    const userToAdd = await prisma.user.findUnique({ where: { email } });
+    const userToAdd = await prisma.user.findUnique({ where: { id: studentId } });
     if (!userToAdd) {
-        throw new HttpError(404, "Utilizatorul cu acest email nu exista.");
+        throw new HttpError(404, "Studentul nu exista.");
     }
 
     if (userToAdd.role !== "STUDENT") {
@@ -215,6 +241,7 @@ module.exports = {
     listTeams,
     getTeam,
     createTeam,
+    getAvailableStudents,
     addMember,
     removeMember,
     addProject,

@@ -33,14 +33,26 @@ async function createTeam(req, res, next) {
     }
 }
 
+
+async function getAvailableStudents(req, res, next) {
+
+    try {
+        const { teamId } = req.params;
+        const students = await teamsService.getAvailableStudents(teamId);
+        return res.json({ students });
+    } catch (err) {
+        next(err);
+    }
+}
+
 async function addMember(req, res, next) {
     try {
         const { teamId } = req.params;
-        const { email } = req.body;
-        if (!email) {
-            throw new HttpError(400, "Emailul este obligatoriu.");
+        const { studentId } = req.body;
+        if (!studentId) {
+            throw new HttpError(400, "StudentId-ul este obligatoriu.");
         }
-        const result = await teamsService.addMember(teamId, req.user.id, email);
+        const result = await teamsService.addMember(teamId, req.user.id, studentId);
         return res.status(201).json(result);
     } catch (err) {
         next(err);
@@ -119,6 +131,7 @@ module.exports = {
     listTeams,
     getTeam,
     createTeam,
+    getAvailableStudents,
     addMember,
     removeMember,
     addProject

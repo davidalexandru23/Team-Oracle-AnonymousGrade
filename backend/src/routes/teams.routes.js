@@ -5,6 +5,7 @@ const {
     listTeams,
     getTeam,
     createTeam,
+    getAvailableStudents,
     addMember,
     removeMember,
     addProject
@@ -27,6 +28,7 @@ router.get("/teams", requireStudent, listTeams);
 router.get("/teams/:teamId", requireStudent, getTeam);
 router.post("/teams", requireStudent, createTeam);
 router.post("/teams/:teamId/projects", requireStudent, addProject);
+router.get("/teams/:teamId/available-students", requireStudent, getAvailableStudents);
 router.post("/teams/:teamId/members", requireStudent, addMember);
 router.delete("/teams/:teamId/members/:memberId", requireStudent, removeMember);
 
