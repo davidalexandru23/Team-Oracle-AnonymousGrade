@@ -16,7 +16,7 @@ const env = {
   databaseUrl: mustGet("DATABASE_URL"),
   jwtSecret: mustGet("JWT_SECRET"),
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "7d",
-  jurySize: toIntOrDefault(process.env.JURY_SIZE, 3),
+  jurySize: toIntOrDefault(process.env.JURY_SIZE, 5),
   assignmentExpiresHours: toIntOrDefault(process.env.ASSIGNMENT_EXPIRES_HOURS, 48)
 };
 
