@@ -67,7 +67,7 @@ function Footer() {
           </div>
         )}
         <div className="footer-info">
-          <span>NotaAnonima © 2024</span>
+          <span>NotaAnonima © 2026 (Nu e adevarat)</span>
           <button onClick={fetchQuote} className="refresh-quote-btn">
             Citat nou
           </button>
