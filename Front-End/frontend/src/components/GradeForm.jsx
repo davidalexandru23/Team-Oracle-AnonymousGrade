@@ -1,19 +1,24 @@
+// GradeForm.jsx - formularul pentru trimiterea notelor
+// afisare diferita daca termenul a expirat vs daca e inca activ
+
 import { useState } from 'react';
 import { submitGrade } from '../api/grades';
 
 function GradeForm({ deliverableId, currentGrade, onSubmit, disabled, expiresAt }) {
+  // starea formularului
   const [score, setScore] = useState(currentGrade?.score || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Check expiration in real-time
+  // verificam daca termenul a expirat - in timp real
   const isExpired = expiresAt ? new Date(expiresAt) < new Date() : disabled;
 
+  // trimiterea notei
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Double-check expiration before submitting
+    // verificam inca o data daca nu a expirat
     if (isExpired) {
       setError('Termenul de evaluare a expirat. Nu mai poti modifica nota.');
       return;
@@ -22,19 +27,21 @@ function GradeForm({ deliverableId, currentGrade, onSubmit, disabled, expiresAt 
     setError('');
     setSuccess('');
 
+    // validam nota - trebuie sa fie intre 1 si 10
     const numScore = parseFloat(score);
     if (isNaN(numScore) || numScore < 1 || numScore > 10) {
       setError('Nota trebuie sa fie intre 1 si 10');
       return;
     }
 
-    // Round to 2 decimal places
+    // rotunjim la 2 zecimale
     const roundedScore = Math.round(numScore * 100) / 100;
 
     setLoading(true);
     try {
       await submitGrade(deliverableId, roundedScore);
       setSuccess('Nota a fost salvata cu succes!');
+      // notificam parintele sa reimprospateze datele
       if (onSubmit) onSubmit();
     } catch (err) {
       setError(err.response?.data?.message || 'Nu s-a putut trimite nota');
@@ -43,7 +50,7 @@ function GradeForm({ deliverableId, currentGrade, onSubmit, disabled, expiresAt 
     }
   };
 
-  // If expired, show read-only view
+  // daca a expirat, afisam doar nota finala sau mesaj de ratare
   if (isExpired) {
     return (
       <div className="grade-form-expired">
@@ -60,6 +67,7 @@ function GradeForm({ deliverableId, currentGrade, onSubmit, disabled, expiresAt 
     );
   }
 
+  // formularul activ pentru introducerea notei
   return (
     <form onSubmit={handleSubmit} className="grade-form">
       <div className="form-group">
