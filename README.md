@@ -1,7 +1,9 @@
 # Aplicatie Web pentru Acordarea Anonima de Note 
-
+Proiectul este live pe: teamoracle.davidab.ro
+Backend live:  backend.davidab.ro
+DB PostgreSQL live pe Neon: https://console.neon.tech/app/projects/broad-moon-20096364
 1. Descriere
-
+    
     Aplicatia permite evaluarea anonima a proiectelor studentilor de catre un juriu formata aleatoriu din alti studenti. Studentii pot inscrie proiecte, pot defini livrabile partiale si pot fi selectati aleatoriu pentru a evalua proiectele altor colegi.
 
     Nota finala se calculeaza prin eliminarea celei mai mari si celei mai mici note, note de la 1-10, cu 2 cifre fractionare.
