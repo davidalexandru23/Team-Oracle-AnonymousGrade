@@ -1,7 +1,7 @@
 const { prisma } = require("../prisma/client");
 const { HttpError } = require("../utils/httpError");
 
-// Return teams user is owner OR member of
+// Returneaza echipele unde userul este membru sau owner.
 async function listTeams(userId) {
     const teams = await prisma.team.findMany({
         where: {
@@ -40,6 +40,7 @@ async function listTeams(userId) {
     }));
 }
 
+// Returneaza detaliile unei echipe daca userul are acces.
 async function getTeam(teamId, userId) {
     const team = await prisma.team.findUnique({
         where: { id: teamId },
@@ -83,6 +84,7 @@ async function getTeam(teamId, userId) {
     };
 }
 
+// Creeaza o echipa noua.
 async function createTeam(ownerId, name, description) {
     const team = await prisma.team.create({
         data: {
@@ -94,6 +96,7 @@ async function createTeam(ownerId, name, description) {
     return team;
 }
 
+// Returneaza studentii care pot fi adaugati in echipa (nu sunt deja membri).
 async function getAvailableStudents(teamId) {
     const team = await prisma.team.findUnique({
         where: { id: teamId },
@@ -120,6 +123,7 @@ async function getAvailableStudents(teamId) {
     return students;
 }
 
+// Adauga un membru in echipa.
 async function addMember(teamId, requestingUserId, studentId) {
     // Check auth and team existence
     const team = await prisma.team.findUnique({ where: { id: teamId } });
@@ -159,6 +163,7 @@ async function addMember(teamId, requestingUserId, studentId) {
     return { message: "Membru adaugat.", member: { id: userToAdd.id, name: userToAdd.name, email: userToAdd.email } };
 }
 
+// Sterge un membru din echipa.
 async function removeMember(teamId, requestingUserId, memberId) {
     // memberId here refers to the User ID we want to remove? 
     // The API spec says `DELETE /teams/:teamId/members/:memberId`. Usually memberId implies User ID in this context or TeamMember ID.
@@ -189,6 +194,7 @@ async function removeMember(teamId, requestingUserId, memberId) {
     return { message: "Membru sters." };
 }
 
+// Adauga un proiect existent la echipa.
 async function addProject(teamId, requestingUserId, projectId) {
     const team = await prisma.team.findUnique({ where: { id: teamId } });
     if (!team) throw new HttpError(404, "Echipa nu exista.");
@@ -217,6 +223,7 @@ async function addProject(teamId, requestingUserId, projectId) {
     return { project: updated };
 }
 
+// Creeaza un proiect nou direct in echipa.
 async function createTeamProject(teamId, requestingUserId, title, description) {
     const team = await prisma.team.findUnique({ where: { id: teamId } });
     if (!team) throw new HttpError(404, "Echipa nu exista.");

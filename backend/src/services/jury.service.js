@@ -2,6 +2,7 @@ const { prisma } = require("../prisma/client");
 const { shuffleInPlace } = require("../utils/random");
 const { HttpError } = require("../utils/httpError");
 
+// Asigneaza un juriu aleatoriu pentru un livrabil, excluzand owner-ul.
 async function assignJury({ deliverableId, jurySize, expiresAt }) {
   console.log(`[AssignJury] Start for deliverable ${deliverableId}, size ${jurySize}`);
   try {

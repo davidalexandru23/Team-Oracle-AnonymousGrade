@@ -1,10 +1,6 @@
 const { centsToFixed2 } = require("../utils/validate");
 
-/*
-  Primeste o lista de scoruri (in cents) si calculeaza:
-  - daca >=3: elimina min si max (o singura data) si face media restului
-  - altfel: returneaza status insuficient
-*/
+// Calculeaza nota finala eliminand extremele daca sunt >= 3 note.
 function computeFinalGradeFromCents(scoreCentsList) {
   const n = scoreCentsList.length;
 
