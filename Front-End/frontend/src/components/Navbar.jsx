@@ -36,14 +36,12 @@ function Navbar() {
               to="/teams" 
               className={`nav-link ${isActive('/teams') || isActive('/projects') ? 'active' : ''}`}
             >
-              <span className="nav-icon">📁</span>
               Echipele Mele
             </Link>
             <Link 
               to="/assignments" 
               className={`nav-link ${isActive('/assignments') ? 'active' : ''}`}
             >
-              <span className="nav-icon">📝</span>
               Evaluari
             </Link>
           </>
@@ -53,7 +51,6 @@ function Navbar() {
             to="/teacher" 
             className={`nav-link ${isActive('/teacher') ? 'active' : ''}`}
           >
-            <span className="nav-icon">📊</span>
             Toate Proiectele
           </Link>
         )}

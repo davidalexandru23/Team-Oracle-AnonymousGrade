@@ -22,6 +22,11 @@ function ProjectDetails() {
   const [demoUrl, setDemoUrl] = useState('');
   const [creating, setCreating] = useState(false);
 
+  // Jury assignment state
+  const [showJuryForm, setShowJuryForm] = useState(null); // deliverable ID or null
+  const [juryDeadline, setJuryDeadline] = useState('');
+  const [assigningJury, setAssigningJury] = useState(false);
+
   const isTeacher = user?.role === 'TEACHER';
   const isOwner = project?.ownerId === user?.id;
 
@@ -87,13 +92,31 @@ function ProjectDetails() {
     }
   };
 
-  const handleAssignJury = async (deliverableId) => {
+  const openJuryForm = (deliverableId) => {
+    // Set default deadline to 48 hours from now
+    const defaultDeadline = new Date();
+    defaultDeadline.setHours(defaultDeadline.getHours() + 48);
+    const formatted = defaultDeadline.toISOString().slice(0, 16);
+    setJuryDeadline(formatted);
+    setShowJuryForm(deliverableId);
+  };
+
+  const handleAssignJury = async (e) => {
+    e.preventDefault();
+    if (!showJuryForm || !juryDeadline) return;
+
+    setAssigningJury(true);
     try {
-      const result = await assignJury(deliverableId);
-      alert(`Juriu alocat! ${result.jurySize} evaluatori, expira la ${new Date(result.expiresAt).toLocaleString('ro-RO')}`);
+      const expiresAt = new Date(juryDeadline).toISOString();
+      const result = await assignJury(showJuryForm, expiresAt);
+      alert(`Juriu alocat cu succes! ${result.jurySize} evaluatori, termen: ${new Date(result.expiresAt).toLocaleString('ro-RO')}`);
+      setShowJuryForm(null);
+      setJuryDeadline('');
       fetchProjectData();
     } catch (err) {
       alert(err.response?.data?.message || 'Nu s-a putut aloca juriul');
+    } finally {
+      setAssigningJury(false);
     }
   };
 
@@ -188,12 +211,43 @@ function ProjectDetails() {
                 />
                 {isTeacher && (
                   <div className="teacher-actions">
-                    <button
-                      onClick={() => handleAssignJury(del.id)}
-                      className="btn btn-secondary"
-                    >
-                      Aloca Juriu
-                    </button>
+                    {showJuryForm === del.id ? (
+                      <form onSubmit={handleAssignJury} className="jury-form">
+                        <div className="form-group">
+                          <label htmlFor={`jury-deadline-${del.id}`}>Termen Evaluare</label>
+                          <input
+                            type="datetime-local"
+                            id={`jury-deadline-${del.id}`}
+                            value={juryDeadline}
+                            onChange={(e) => setJuryDeadline(e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div className="jury-form-actions">
+                          <button
+                            type="submit"
+                            disabled={assigningJury}
+                            className="btn btn-primary btn-small"
+                          >
+                            {assigningJury ? 'Se aloca...' : 'Confirma'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setShowJuryForm(null)}
+                            className="btn btn-secondary btn-small"
+                          >
+                            Anuleaza
+                          </button>
+                        </div>
+                      </form>
+                    ) : (
+                      <button
+                        onClick={() => openJuryForm(del.id)}
+                        className="btn btn-secondary"
+                      >
+                        Aloca Juriu
+                      </button>
+                    )}
                     {del.grades && del.grades.length > 0 && (
                       <div className="grades-list">
                         <h4>Note Individuale (Anonime):</h4>

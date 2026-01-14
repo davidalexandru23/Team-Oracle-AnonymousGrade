@@ -49,11 +49,11 @@ function GradeForm({ deliverableId, currentGrade, onSubmit, disabled, expiresAt 
       <div className="grade-form-expired">
         {currentGrade ? (
           <p className="final-submitted-grade">
-            ✓ Nota ta finala: <strong>{currentGrade.score}</strong>
+            Nota ta finala: <strong>{currentGrade.score}</strong>
           </p>
         ) : (
           <p className="missed-deadline">
-            ⚠️ Nu ai trimis nota la timp. Termenul a expirat.
+            Nu ai trimis nota la timp. Termenul a expirat.
           </p>
         )}
       </div>

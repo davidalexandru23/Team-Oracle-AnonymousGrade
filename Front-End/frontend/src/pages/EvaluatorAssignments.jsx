@@ -53,7 +53,6 @@ function EvaluatorAssignments() {
     return `${hours}h ${minutes}m ramase`;
   };
 
-  // Separate active and expired assignments
   const activeAssignments = assignments.filter(a => !isExpired(a.expiresAt));
   const expiredAssignments = assignments.filter(a => isExpired(a.expiresAt));
 
@@ -64,7 +63,7 @@ function EvaluatorAssignments() {
   return (
     <div className="evaluator-dashboard">
       <div className="dashboard-header">
-        <h1>📝 Evaluarile Mele</h1>
+        <h1>Evaluarile Mele</h1>
         <p className="dashboard-subtitle">
           Proiectele pe care trebuie sa le evaluezi ca membru al juriului
         </p>
@@ -74,17 +73,14 @@ function EvaluatorAssignments() {
 
       {assignments.length === 0 ? (
         <div className="empty-state">
-          <div className="empty-icon">🎓</div>
           <h3>Nu ai evaluari inca</h3>
           <p>Vei fi alocat aleatoriu sa evaluezi proiecte de catre profesori.</p>
         </div>
       ) : (
         <>
-          {/* Active Assignments */}
           {activeAssignments.length > 0 && (
             <div className="assignments-section">
               <h2 className="section-title">
-                <span className="section-icon">🔥</span>
                 Evaluari Active ({activeAssignments.length})
               </h2>
               <div className="assignments-grid">
@@ -108,7 +104,7 @@ function EvaluatorAssignments() {
                           rel="noopener noreferrer"
                           className="demo-link"
                         >
-                          🔗 Vezi Demo
+                          Vezi Demo
                         </a>
                       )}
                       
@@ -143,11 +139,9 @@ function EvaluatorAssignments() {
             </div>
           )}
 
-          {/* Expired Assignments */}
           {expiredAssignments.length > 0 && (
             <div className="assignments-section expired-section">
               <h2 className="section-title">
-                <span className="section-icon">📋</span>
                 Evaluari Finalizate ({expiredAssignments.length})
               </h2>
               <div className="assignments-grid">

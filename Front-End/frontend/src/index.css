@@ -488,6 +488,26 @@ body {
   border: 1px solid var(--border);
 }
 
+.jury-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--bg-card);
+  border-radius: 10px;
+  border: 2px solid var(--primary);
+  margin-bottom: 1rem;
+}
+
+.jury-form .form-group {
+  margin-bottom: 0;
+}
+
+.jury-form-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
 .grades-list {
   margin-top: 1rem;
 }
