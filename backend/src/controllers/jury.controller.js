@@ -6,9 +6,20 @@ const { prisma } = require("../prisma/client");
 async function assignJuryToDeliverable(req, res, next) {
   try {
     const deliverableId = req.params.deliverableId;
+    const bodyExpiresAt = req.body.expiresAt;
 
-    // expiresAt = acum + X ore 
-    const expiresAt = new Date(Date.now() + env.assignmentExpiresHours * 60 * 60 * 1000);
+    // daca avem data invalida/null -> fallback la default
+    let expiresAt;
+    if (bodyExpiresAt) {
+      const parsed = new Date(bodyExpiresAt);
+      if (!Number.isNaN(parsed.getTime())) {
+        expiresAt = parsed;
+      }
+    }
+
+    if (!expiresAt) {
+      expiresAt = new Date(Date.now() + env.assignmentExpiresHours * 60 * 60 * 1000);
+    }
 
     const result = await assignJury({
       deliverableId,
