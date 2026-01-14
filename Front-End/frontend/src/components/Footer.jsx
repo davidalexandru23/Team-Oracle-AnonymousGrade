@@ -1,5 +1,5 @@
 // Componenta Footer care afiseaza un citat amuzant de la un API extern
-// API-ul folosit este type.fit - returneaza citate random fara restrictii CORS
+// API-ul folosit este dummyjson.com/quotes - API gratuit care permite CORS
 
 import { useState, useEffect } from 'react';
 
@@ -20,12 +20,14 @@ function Footer() {
     { text: "Fa azi ce altii nu vor, ca maine sa poti face ce altii nu pot.", author: "Jerry Rice" }
   ];
 
-  // functie care ia un citat - incearca API-ul, daca nu merge foloseste backup
+  // functie care ia un citat de la API-ul extern DummyJSON
   const fetchQuote = async () => {
     setLoading(true);
     try {
-      // folosim un API care permite CORS - programming quotes
-      const response = await fetch('https://programming-quotesapi.vercel.app/api/random');
+      // DummyJSON - API gratuit care permite CORS
+      // luam un citat random (id intre 1 si 30)
+      const randomId = Math.floor(Math.random() * 30) + 1;
+      const response = await fetch(`https://dummyjson.com/quotes/${randomId}`);
       
       if (!response.ok) {
         throw new Error('API nu a raspuns');
