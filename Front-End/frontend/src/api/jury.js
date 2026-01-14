@@ -1,8 +1,8 @@
 import client from './client';
 
 // assign jury to a deliverable (teacher only)
-export const assignJury = async (deliverableId) => {
-  const response = await client.post(`/deliverables/${deliverableId}/assign-jury`);
+export const assignJury = async (deliverableId, expiresAt) => {
+  const response = await client.post(`/deliverables/${deliverableId}/assign-jury`, { expiresAt });
   return response.data;
 };
 
