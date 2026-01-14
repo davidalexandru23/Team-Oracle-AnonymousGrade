@@ -1,5 +1,5 @@
 // Componenta Footer care afiseaza un citat amuzant de la un API extern
-// API-ul folosit este zenquotes.io - returneaza citate random
+// API-ul folosit este type.fit - returneaza citate random fara restrictii CORS
 
 import { useState, useEffect } from 'react';
 
@@ -8,26 +8,41 @@ function Footer() {
   const [quote, setQuote] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // functie care ia un citat de la API-ul extern
+  // lista de citate locale ca backup daca API-ul nu merge
+  const fallbackQuotes = [
+    { text: "Invatarea nu se termina niciodata.", author: "Leonardo da Vinci" },
+    { text: "Cel mai bun timp sa plantezi un copac a fost acum 20 de ani. Al doilea cel mai bun timp este acum.", author: "Proverb Chinezesc" },
+    { text: "Succesul nu este final, esecul nu este fatal: curajul de a continua este ceea ce conteaza.", author: "Winston Churchill" },
+    { text: "Simplitatea este sofisticarea suprema.", author: "Leonardo da Vinci" },
+    { text: "Viitorul apartine celor care cred in frumusetea viselor lor.", author: "Eleanor Roosevelt" },
+    { text: "Nu astepta. Nu va fi niciodata momentul potrivit.", author: "Napoleon Hill" },
+    { text: "Fiecare expert a fost candva un incepator.", author: "Helen Hayes" },
+    { text: "Fa azi ce altii nu vor, ca maine sa poti face ce altii nu pot.", author: "Jerry Rice" }
+  ];
+
+  // functie care ia un citat - incearca API-ul, daca nu merge foloseste backup
   const fetchQuote = async () => {
+    setLoading(true);
     try {
-      // folosim un proxy pentru a evita probleme de CORS
-      // API-ul zenquotes nu permite requests direct din browser
-      const response = await fetch('https://api.quotable.io/random');
+      // folosim un API care permite CORS - programming quotes
+      const response = await fetch('https://programming-quotesapi.vercel.app/api/random');
+      
+      if (!response.ok) {
+        throw new Error('API nu a raspuns');
+      }
+      
       const data = await response.json();
       
       // salvam citatul in state
       setQuote({
-        text: data.content,
+        text: data.quote,
         author: data.author
       });
     } catch (err) {
-      // daca API-ul nu merge, punem un citat default
-      console.log('Nu am putut lua citatul:', err);
-      setQuote({
-        text: 'Invatarea nu se termina niciodata.',
-        author: 'Anonim'
-      });
+      // daca API-ul nu merge, alegem un citat random din backup
+      console.log('API extern indisponibil, folosim citat local:', err);
+      const randomIndex = Math.floor(Math.random() * fallbackQuotes.length);
+      setQuote(fallbackQuotes[randomIndex]);
     } finally {
       setLoading(false);
     }
