@@ -15,7 +15,7 @@
     - Baza de Date: PostgreSQL
     - Versionare: Git
     - Deploy: 
-        - Frontend si Backend: Render
+        - Frontend si Backend: Coolify 
         - Baza de Date: Neon
 
 
