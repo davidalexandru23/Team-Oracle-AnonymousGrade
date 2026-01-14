@@ -1070,4 +1070,66 @@ body {
   background: #a00f1a;
 }
 
+/* footer cu citate de la API extern */
+.app-footer {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 2rem;
+  margin-top: auto;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.quote-container {
+  margin-bottom: 1rem;
+}
+
+.quote-text {
+  font-style: italic;
+  color: var(--text);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.quote-author {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.quote-loading {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.footer-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.refresh-quote-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.refresh-quote-btn:hover {
+  background: var(--bg-input);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+
 
